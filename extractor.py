@@ -1,6 +1,4 @@
 from requests import get, post
-from sys import exit
-from pprint import pprint
 from datetime import datetime, timedelta
 import re
 import os
@@ -32,50 +30,29 @@ def set_offset(value):
 limit = 100
 
 
-def get_playlists_by_artist(offset, access_token, artist_id = 2366):
+def get_playlists_by_artist(offset, access_token, artist_id):
     platform = 'spotify'
     status = 'current'
     since = (datetime.utcnow() - timedelta(days=365)).strftime('%Y-%m-%d')
-    sort_column = 'followers'
-
-    # excludeCharts = true
-    # fromDaysAgo = 365
-    # limit = 200
-    # offset = 0
-    # primaryArtist = false
-    # toDaysAgo = 0
-    # withTotal = true
-    # sortBy = followers
-    # sortDirection = descending
-    # ids[] = 2366
-    # indie = true
-
-    # uri = (
-    #     f'/api/artist/{id}/{platform}/{status}/playlists?limit={limit}&offset={offset}&since={since}&sortColumn={sort_column}'
-    #     f'&sortOrderDesc=true'
-    #     f'&editorial=false&personalized=false&chart=false&thisIs=false&newMusicFriday=false'
-    #     f'&radio=false&fullyPersonalized=false&brand=false&majorCurator=false'
-    #     f'&popularIndie=false&indie=false&audiobook=false')
 
     uri = (
-        f'/api/artist/{id}/{platform}/{status}/playlists?limit={limit}&offset={offset}&since={since}&sortColumn={sort_column}'
+        f'/api/artist/{artist_id}/{platform}/{status}/playlists'
+        f'?limit={limit}'
+        f'&offset={offset}'
+        f'&since={since}'
+        f'&sortColumn=followers'
         f'&sortOrderDesc=true'
         f'&chart=false'
         f'&brand=false'
-        f'&indie=true')
-
-    # uri = (f'/api/artist/{id}/{platform}/{status}/playlists?limit={limit}&since={since}')
+        f'&indie=true'
+    )
 
     return get(f'{HOST}{uri}', headers={'Authorization': f'Bearer {access_token}'})
 
 
 def extract_emails(text):
-    # Regular expression pattern for matching email addresses
     email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-
-    # Find all matches of the email pattern in the text
     emails = re.findall(email_pattern, text)
-
     return emails
 
 

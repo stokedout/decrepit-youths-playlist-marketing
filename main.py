@@ -2,18 +2,6 @@ import argparse
 import extractor
 
 
-# Create business website on wix
-# Link stokedout.net domain name
-# Get API access token using new website
-# Authenticate with chart metrics API
-# Start with input artist id "Bring me the horizon"
-# Get playlists for an artist filtered by "independent curator"
-# Get playlist info
-# Extract email address from playlist about (may not exist in text)
-# Add email to csv file
-# Uploaded csv to marketing email programme and send
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--refresh_token', dest='refresh_token', required=True, type=str,
