@@ -29,6 +29,9 @@ The following commands only need to be run once per computer. Copy and paste eac
 Copy and paste the `command` text below into the Terminal app each time you use it.
 You need to replace `REFRESH_TOKEN` and `ARTIST_ID` with real values.
 
+> An artist identifier e.g. '2366' can be found in the URL of each artist page in Chart Metric
+> e.g. https://app.chartmetric.com/artist/2366 
+
 ```commandline
 docker run --pull=always --rm -v $PWD:/app ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
     --refresh_token REFRESH_TOKEN \
@@ -41,6 +44,11 @@ docker run --pull=always --rm -v $PWD:/app ghcr.io/stokedout/decrepit-youths-pla
     --refresh_token 2ef46b342cc74686ac64ed5a0e27942c2ef46b342cc74686ac64ed5a0e27942c \
     --artist_id 1234
 ```
+
+Once it begins you can see some of the output in the Terminal.
+It will generate two files where ARTIST_ID the artist identifier you've chosen:
+* 'ARTIST_ID.csv' - contains extracted email addresses
+* 'ARTIST_ID_offset.txt' - used internally therefore ignore this file
 
 > Due to restrictions on the API it has to run slowly in order to work within the set limits therefore just run the command and let it work in the background. It may take 30 seconds to 10 hours depending on how many playlists an artist has.
 
