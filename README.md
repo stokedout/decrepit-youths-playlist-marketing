@@ -17,9 +17,12 @@ What you need in order to use this script.
 
 The following commands only need to be run once per computer. Copy and paste each `command` into the Terminal app and enter your password when required.
 
-* Install Docker `curl -fsSL get.docker.com | bash`
+* Install Docker https://docs.docker.com/desktop/install/mac-install/ and choose the download that matches your hardware. For example if you have an M1, M2 or M3 Macbook then it's 'Apple Silicon' if you have i5, i7 etc it's 'Intel'
+  If you're unsure try `uname -m`
+  * x86_64 = Intel
+  * arm64 = Apple Silicon
+  Upon installing just go through the installation wizard and choose the recommended settins.
 * Verify Docker has installed `docker --version` and you should see roughly `Docker version ****, build ****`
-* Set permissions to run the script `chmod +x ./run.sh`
 
 ## Usage
 
@@ -27,12 +30,16 @@ Copy and paste the `command` text below into the Terminal app each time you use 
 You need to replace `REFRESH_TOKEN` and `ARTIST_ID` with real values.
 
 ```commandline
-sudo ./run.sh REFRESH_TOKEN ARTIST_ID
+docker run --pull=always --rm -v $PWD:/app ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
+    --refresh_token REFRESH_TOKEN \
+    --artist_id ARTIST_ID
 ```
 
 e.g. with fake values
-```commandline
-sudo ./run.sh 2ef46b342cc74686ac64ed5a0e27942c2ef46b342cc74686ac64ed5a0e27942c 1234
+```commandline 
+docker run --pull=always --rm -v $PWD:/app ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
+    --refresh_token 2ef46b342cc74686ac64ed5a0e27942c2ef46b342cc74686ac64ed5a0e27942c \
+    --artist_id 1234
 ```
 
 > Due to restrictions on the API it has to run slowly in order to work within the set limits therefore just run the command and let it work in the background. It may take 30 seconds to 10 hours depending on how many playlists an artist has.
