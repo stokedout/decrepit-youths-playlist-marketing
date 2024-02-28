@@ -8,22 +8,30 @@ HOST = 'https://api.chartmetric.com'
 
 def get_access_token(refresh_token):
     res = post(f'{HOST}/api/token', json={"refreshtoken": refresh_token})
-    for header in res.headers:
-        print(header)
+
     if res.status_code != 200:
         raise RuntimeError(f'ERROR: received a {res.status_code} instead of 200 from /api/token')
 
     return res.json()
 
 
-def get_offset():
-    print(os.getcwd())
-    with open('offset.txt', 'r') as offset:
+def ensure_offset_exists(artist_id):
+    if os.path.exists(f'{artist_id}_offset.txt'):
+        return
+
+    print('Creating offset file')
+    with open(f'{artist_id}_offset.txt', 'w') as f:
+        return f.write(str(0))
+
+
+def get_offset(artist_id):
+    ensure_offset_exists(artist_id)
+    with open(f'{artist_id}_offset.txt', 'r') as offset:
         return int(offset.read().strip())
 
 
-def set_offset(value):
-    with open('offset.txt', 'w') as f:
+def set_offset(artist_id, value):
+    with open(f'{artist_id}_offset.txt', 'w') as f:
         return f.write(str(value))
 
 
@@ -80,22 +88,22 @@ def extract(refresh_token, artist_id):
     while True:
         if datetime.utcnow() > expires_at:
             print('refresh token')
-            token_response = get_access_token()
+            token_response = get_access_token(refresh_token)
             access_token = token_response['token']
             expires_in = token_response['expires_in']
             expires_at = datetime.utcnow() + timedelta(seconds=expires_in)
 
-        offset = get_offset()
+        offset = get_offset(artist_id)
         print(offset)
 
         res = get_playlists_by_artist(offset, access_token, artist_id)
         if res.status_code != 200:
-            raise RuntimeError(f'ERROR: received a {res.status_code} instead of 200 from /api/token')
+            raise RuntimeError(f'ERROR: received a {res.status_code} instead of 200 from /api/artist/-/-/-/playlists')
 
         playlists = res.json()['obj']
 
         if len(playlists) == 0:
-            print('No more playlists found')
+            print(f'No more playlists found. See results in file {artist_id}.csv.')
             break
 
         for playlist in playlists:
@@ -109,6 +117,6 @@ def extract(refresh_token, artist_id):
                 append_to_csv(artist_id, name, owner, followers, email)
 
         offset += limit
-        set_offset(offset)
+        set_offset(artist_id, offset)
 
 
