@@ -1,1 +1,4 @@
 .env
+*_offset.txt
+*.csv
+__pycache__
