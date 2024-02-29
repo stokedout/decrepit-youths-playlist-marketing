@@ -15,23 +15,31 @@ def get_access_token(refresh_token):
     return res.json()
 
 
+def get_offset_path(artist_id):
+    return f'/data/{artist_id}_offset.txt'
+
+
+def get_data_path(artist_id):
+    return f'/data/{artist_id}.csv'
+
+
 def ensure_offset_exists(artist_id):
-    if os.path.exists(f'{artist_id}_offset.txt'):
+    if os.path.exists(get_offset_path(artist_id)):
         return
 
     print('Creating offset file')
-    with open(f'{artist_id}_offset.txt', 'w') as f:
+    with open(get_offset_path(artist_id), 'w') as f:
         return f.write(str(0))
 
 
 def get_offset(artist_id):
     ensure_offset_exists(artist_id)
-    with open(f'{artist_id}_offset.txt', 'r') as offset:
+    with open(get_offset_path(artist_id), 'r') as offset:
         return int(offset.read().strip())
 
 
 def set_offset(artist_id, value):
-    with open(f'{artist_id}_offset.txt', 'w') as f:
+    with open(get_offset_path(artist_id), 'w') as f:
         return f.write(str(value))
 
 
@@ -74,7 +82,7 @@ def append_to_csv(artist_id, name, owner, followers, email):
 
     rows[key] = True
 
-    with open(f'{artist_id}.csv', 'a') as file:
+    with open(get_data_path(artist_id), 'a') as file:
         print(f'{name},{owner},{followers},{email}')
         file.write(f'{name},{owner},{followers},{email}\n')
 

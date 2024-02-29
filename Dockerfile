@@ -2,6 +2,8 @@ FROM python:3-alpine
 
 WORKDIR /app
 
+VOLUME data
+
 COPY ./extractor.py /app/extractor.py
 COPY ./main.py /app/main.py
 COPY ./requirements.txt /app/requirements.txt

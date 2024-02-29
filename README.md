@@ -33,14 +33,14 @@ You need to replace `REFRESH_TOKEN` and `ARTIST_ID` with real values.
 > e.g. https://app.chartmetric.com/artist/2366 
 
 ```commandline
-docker run --pull=always --platform linux/x86_64 --rm -v $PWD:$PWD ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
+docker run --pull=always --platform linux/x86_64 --rm -v $PWD/data:/data ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
   --refresh_token=REFRESH_TOKEN \
   --artist_id=ARTIST_ID
 ```
 
 e.g. with fake values
 ```commandline 
-docker run --pull=always --platform linux/x86_64 --rm -v $PWD:$PWD ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
+docker run --pull=always --platform linux/x86_64 --rm -v $PWD/data:/data ghcr.io/stokedout/decrepit-youths-playlist-marketing/email-extractor:main \
   --refresh_token=2ef46b342cc74686ac64ed5a0e27942c2ef46b342cc74686ac64ed5a0e27942c \
   --artist_id=1234
 ```
