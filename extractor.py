@@ -117,7 +117,7 @@ def extract(refresh_token, artist_id):
         for playlist in playlists:
             name = playlist['playlist']['name']
             owner = playlist['playlist']['owner_name']
-            followers = playlist['playlist']['followers']
+            followers = playlist['playlist']['followers'] if "followers" in playlist['playlist'] else "not set"
             description = playlist['playlist']['description']
             emails = extract_emails(description)
 
