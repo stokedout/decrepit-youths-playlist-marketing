@@ -16,11 +16,11 @@ def get_access_token(refresh_token):
 
 
 def get_offset_path(artist_id):
-    return f'/data/{artist_id}_offset.txt'
+    return f'data/{artist_id}_offset.txt'
 
 
 def get_data_path(artist_id):
-    return f'/data/{artist_id}.csv'
+    return f'data/{artist_id}.csv'
 
 
 def ensure_offset_exists(artist_id):
@@ -87,11 +87,22 @@ def append_to_csv(artist_id, name, owner, followers, email):
         file.write(f'{name},{owner},{followers},{email}\n')
 
 
+def populate_rows(artist_id):
+    if not os.path.exists(get_data_path(artist_id)):
+        return
+
+    with open(get_data_path(artist_id)) as f:
+        for row in f.readlines():
+            email_address = row.split(",")[3].strip()
+            rows[email_address] = True
+
+
 def extract(refresh_token, artist_id):
     token_response = get_access_token(refresh_token)
     access_token = token_response['token']
     expires_in = int(token_response['expires_in'])
     expires_at = datetime.utcnow() + timedelta(seconds=expires_in)
+    populate_rows(artist_id)
 
     while True:
         if datetime.utcnow() > expires_at:
