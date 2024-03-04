@@ -16,11 +16,11 @@ def get_access_token(refresh_token):
 
 
 def get_offset_path(artist_id):
-    return f'data/{artist_id}_offset.txt'
+    return f'/data/{artist_id}_offset.txt'
 
 
 def get_data_path(artist_id):
-    return f'data/{artist_id}.csv'
+    return f'/data/{artist_id}.csv'
 
 
 def ensure_offset_exists(artist_id):
